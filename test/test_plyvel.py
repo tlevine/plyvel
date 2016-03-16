@@ -210,12 +210,12 @@ _testcases_get_or = [
     (b'abcdefqrstuy', 'get_or_next', b'v', b'y'),
     (b'abcdefqrstuy', 'get_or_next', b'z', None),
 ]
-@pytest.mark.parametrize('db_contents, method, x, y', _testcases_get_or):
+@pytest.mark.parametrize('db_contents, method, x, y', _testcases_get_or)
 def test_get_or(db, db_contents, method, x, y):
     for j in db_contents:
         k = bytes([j])
         db.put(k,k)
-    assert getattr(db, method)(x) == y
+    assert getattr(db, method)(x) == (y, y)
 
 
 def test_delete(db):
