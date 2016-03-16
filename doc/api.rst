@@ -107,26 +107,30 @@ LevelDB database.
       :rtype: bytes
 
 
-   .. py:method:: get_or_prev(key, default=None,
-                              include_key=True, include_value=True,
-                              verify_checksums=False, fill_cache=True)
+   .. py:method:: get_or_prev
+   
+      :param bytes key: key to retrieve
+      :param default: default value if key is not found
+      :param bool include_key: whether to include keys in the returned data
+      :param bool include_value: whether to include values in the returned data
+      :param bool verify_checksums: whether to verify checksums
+      :param bool fill_cache: whether to fill the cache
 
       Like :py:meth:`DB.get`, but fall back to the previous value, and then
       to the default value if no previous value exists
 
-      See :py:meth:`DB.iterator` for documentation on the ``include_key``
-      and ``include_value`` parameters.
 
+   .. py:method:: get_or_next
 
-   .. py:method:: get_or_next(key, default=None,
-                              include_key=True, include_value=True,
-                              verify_checksums=False, fill_cache=True)
+      :param bytes key: key to retrieve
+      :param default: default value if key is not found
+      :param bool include_key: whether to include keys in the returned data
+      :param bool include_value: whether to include values in the returned data
+      :param bool verify_checksums: whether to verify checksums
+      :param bool fill_cache: whether to fill the cache
 
       Like :py:meth:`DB.get`, but fall back to the next value, and then
       to the default value if no next value exists
-
-      See :py:meth:`DB.iterator` for documentation on the ``include_key``
-      and ``include_value`` parameters.
 
 
    .. py:method:: put(key, value, sync=False)
