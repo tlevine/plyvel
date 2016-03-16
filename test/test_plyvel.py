@@ -200,6 +200,24 @@ def test_get(db):
     pytest.raises(TypeError, db.get, b'foo', b'default', True)
 
 
+_testcases_get_or = [
+    (b'abcdefqrstuy', 'get_or_prev', b'a', b'a'),
+    (b'abcdefqrstuy', 'get_or_next', b'q', b'q'),
+
+    (b'abcdefqrstuy', 'get_or_prev', b'0', None),
+    (b'abcdefqrstuy', 'get_or_prev', b'j', b'f'),
+
+    (b'abcdefqrstuy', 'get_or_next', b'v', b'y'),
+    (b'abcdefqrstuy', 'get_or_next', b'z', None),
+]
+@pytest.mark.parametrize('db_contents, method, x, y', _testcases_get_or):
+def test_get_or(db, db_contents, method, x, y):
+    for j in db_contents:
+        k = bytes([j])
+        db.put(k,k)
+    assert getattr(db, method)(x) == y
+
+
 def test_delete(db):
     # Put and delete a key
     key = b'key-that-will-be-deleted'
