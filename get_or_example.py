@@ -4,13 +4,14 @@ from functools import partial
 import plyvel
 
 def _get_or(reverse, db, key, default=None,
+            include_key=True, include_value=True,
             verify_checksums=False, fill_cache=True):
     if reverse:
         startstop = {'stop': key + b'\x00'}
     else:
         startstop = {'start': key}
-    i = db.iterator(include_key=False, reverse=reverse,
-                    verify_checksums=verify_checksums,
+    i = db.iterator(include_key=include_key, include_value=include_value,
+                    reverse=reverse, verify_checksums=verify_checksums,
                     fill_cache=fill_cache, **startstop)
     try:
         return next(i)
