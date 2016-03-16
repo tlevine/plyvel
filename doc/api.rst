@@ -107,6 +107,28 @@ LevelDB database.
       :rtype: bytes
 
 
+   .. py:method:: get_or_prev(key, default=None,
+                              include_key=True, include_value=True,
+                              verify_checksums=False, fill_cache=True)
+
+      Like :py:meth:`DB.get`, but fall back to the previous value, and then
+      to the default value if no previous value exists
+
+      See :py:meth:`DB.iterator` for documentation on the ``include_key``
+      and ``include_value`` parameters.
+
+
+   .. py:method:: get_or_next(key, default=None,
+                              include_key=True, include_value=True,
+                              verify_checksums=False, fill_cache=True)
+
+      Like :py:meth:`DB.get`, but fall back to the next value, and then
+      to the default value if no next value exists
+
+      See :py:meth:`DB.iterator` for documentation on the ``include_key``
+      and ``include_value`` parameters.
+
+
    .. py:method:: put(key, value, sync=False)
 
       Set a value for the specified key.
