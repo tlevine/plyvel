@@ -19,6 +19,7 @@ Use plyvel.DB() to create or open a database.
 import sys
 import threading
 from weakref import ref as weakref_ref
+from functools import partial
 
 cimport cython
 
@@ -103,6 +104,22 @@ cdef inline db_get(DB db, bytes key, object default, ReadOptions read_options):
     raise_for_status(st)
 
     return value
+
+
+def _get_or(reverse, db, key, default=None,
+            include_key=True, include_value=True,
+            verify_checksums=False, fill_cache=True):
+    if reverse:
+        startstop = {'stop': key + '\x00'.encode('ascii')}
+    else:
+        startstop = {'start': key}
+    i = db.iterator(include_key=include_key, include_value=include_value,
+                    reverse=reverse, verify_checksums=verify_checksums,
+                    fill_cache=fill_cache, **startstop)
+    try:
+        return next(i)
+    except StopIteration:
+        return default
 
 
 cdef bytes to_file_system_name(name):
@@ -297,6 +314,9 @@ cdef class DB:
         read_options.fill_cache = fill_cache
 
         return db_get(self, key, default, read_options)
+
+    get_or_prev = partial(_get_or, True)
+    get_or_next = partial(_get_or, False)
 
     def put(self, bytes key not None, bytes value not None, *,
             bool sync=False):
