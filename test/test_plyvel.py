@@ -215,7 +215,11 @@ def test_get_or(db, db_contents, method, x, y):
     for j in db_contents:
         k = bytes([j])
         db.put(k,k)
-    assert getattr(db, method)(x) == (y, y)
+    observed = getattr(db, method)(x)
+    if y == None:
+        assert observed == None
+    else:
+        assert observed == (y, y)
 
 
 def test_delete(db):
